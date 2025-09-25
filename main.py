@@ -193,11 +193,11 @@ if st.session_state.topic is None and not st.session_state.quiz_ended:
         if prompt := st.chat_input("Enter a topic (e.g., Solar System, Maths, Science, General Knowledge)..."):
             st.session_state.messages.append({"role": "user", "content": prompt})
             
-            # --- Strict topic validation ---
             words = prompt.strip().split()
             is_invalid = False
             response = None
 
+            # Validation rules
             if prompt.endswith("?"):
                 response = "❌ Please enter a topic name, not a question. Example: 'Solar System'."
                 is_invalid = True
@@ -209,7 +209,7 @@ if st.session_state.topic is None and not st.session_state.quiz_ended:
                 is_invalid = True
 
             if is_invalid:
-                # Show error and do NOT set topic
+                # Show assistant message and do not proceed
                 st.session_state.messages.append({"role": "assistant", "content": response})
             else:
                 # ✅ Accept valid topic
@@ -316,3 +316,4 @@ if st.session_state.topic is not None or st.session_state.quiz_ended:
     </style>
 
     """, unsafe_allow_html=True)
+
