@@ -188,16 +188,36 @@ def reset_quiz():
 
 # --- Step 1: Topic input ---
 if st.session_state.topic is None and not st.session_state.quiz_ended:
-    # Show the input only when needed
     input_placeholder = st.empty()
     with input_placeholder:
-        if prompt := st.chat_input("Type your topic here..."):
+        if prompt := st.chat_input("Enter a topic (e.g., Solar System, Maths, Science, General Knowledge)..."):
             st.session_state.messages.append({"role": "user", "content": prompt})
-            st.session_state.topic = prompt
             
-            response = f"Great! You chose '{prompt}'. Now select a difficulty level:"
-            st.session_state.messages.append({"role": "assistant", "content": response})
-            st.rerun()
+            # --- Strict topic validation ---
+            words = prompt.strip().split()
+            is_invalid = False
+            response = None
+
+            if prompt.endswith("?"):
+                response = "❌ Please enter a topic name, not a question. Example: 'Solar System'."
+                is_invalid = True
+            elif len(words) > 4:
+                response = "❌ That looks like a sentence. Please enter only a short topic name (e.g., 'Maths', 'Science')."
+                is_invalid = True
+            elif len(prompt.strip()) < 3:
+                response = "❌ That topic name is too short. Try something like 'Maths' or 'Science'."
+                is_invalid = True
+
+            if is_invalid:
+                # Show error and do NOT set topic
+                st.session_state.messages.append({"role": "assistant", "content": response})
+            else:
+                # ✅ Accept valid topic
+                st.session_state.topic = prompt.strip()
+                response = f"Great! You chose '{st.session_state.topic}'. Now select a difficulty level:"
+                st.session_state.messages.append({"role": "assistant", "content": response})
+                st.rerun()
+
 
 # --- Step 2: Difficulty selection ---
 if st.session_state.topic and st.session_state.difficulty is None and not st.session_state.quiz_ended:
@@ -294,4 +314,5 @@ if st.session_state.topic is not None or st.session_state.quiz_ended:
             display: none;
         }
     </style>
+
     """, unsafe_allow_html=True)
