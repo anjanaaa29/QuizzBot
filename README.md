@@ -29,14 +29,5 @@
 - python-dotenv (`pip install python-dotenv`)
 - Optional: Font Awesome for avatars (via CDN)
 
----
-
-## 📦 Installation
-
-1. **Clone the repository**
-
-```bash
-git clone https://github.com/your-username/edusupport-chatbot.git
-cd edusupport-chatbot
 
 
