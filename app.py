@@ -8,7 +8,7 @@ def chatbot_page():
     load_dotenv()
     client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 
-    st.title("💬 Assistant Chatbot")
+    st.title("💬 Edu-Support Chatbot")
     st.caption("Ask me anything about studies related topics")
 
     # CSS for chat bubbles
@@ -124,5 +124,6 @@ def chatbot_page():
 
 
 if __name__ == "__main__":
+
 
     chatbot_page()
